@@ -1,0 +1,121 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Create Blog Post</title>
+    <style>
+        /* Basic styles for the page and form */
+        body {
+            font-family: Arial, sans-serif;
+            margin: 20px;
+        }
+        h1 {
+            text-align: center;
+        }
+        .blog-post {
+            border: 1px solid #ddd;
+            padding: 10px;
+            margin: 10px 0;
+            background-color: #f9f9f9;
+        }
+        .blog-post h3 {
+            margin-top: 0;
+        }
+        /* Styling for feedback messages */
+        .error {
+            color: red;
+            font-size: 14px;
+            margin-top: 10px;
+        }
+        .success {
+            color: green;
+            font-size: 14px;
+            margin-top: 10px;
+        }
+        /* Basic styling for form elements */
+        input, textarea {
+            width: 100%;
+            padding: 10px;
+            margin: 5px 0;
+            font-size: 16px;
+        }
+        button {
+            padding: 10px 15px;
+            font-size: 16px;
+            cursor: pointer;
+        }
+    </style>
+</head>
+<body>
+
+    <h1>Submit a Blog Post</h1>
+
+    <!-- Blog post submission form -->
+    <form id="postForm">
+        <input type="text" id="title" placeholder="Title" required><br><br>
+        <textarea id="content" placeholder="Write your content here" required></textarea><br><br>
+        <button type="submit">Submit Post</button>
+    </form>
+
+    <!-- Section to display the submitted blog posts -->
+    <div id="blogPosts"></div>
+
+    <!-- Feedback message area -->
+    <div id="feedback"></div>
+
+    <script>
+        // Add event listener to the form submission
+        document.getElementById("postForm").addEventListener("submit", function(event) {
+            event.preventDefault();  // Prevent the page from reloading upon form submission
+
+            // Get values from the form inputs
+            const title = document.getElementById("title").value.trim();
+            const content = document.getElementById("content").value.trim();
+
+            // Form validation: Check if both title and content are entered
+            if (!title || !content) {
+                showFeedback("Both title and content are required!", "error");
+                return; // Stop submission if fields are empty
+            }
+
+            // Clear previous feedback messages
+            showFeedback("", "error");
+            showFeedback("", "success");
+
+            // Create a new div element for the blog post
+            const post = document.createElement("div");
+            post.classList.add("blog-post");
+
+            // Create the title element for the post
+            const postTitle = document.createElement("h3");
+            postTitle.textContent = title;
+            post.appendChild(postTitle);
+
+            // Create the content element for the post
+            const postContent = document.createElement("p");
+            postContent.textContent = content;
+            post.appendChild(postContent);
+
+            // Add the new post to the blog posts section
+            const blogPostsSection = document.getElementById("blogPosts");
+            blogPostsSection.appendChild(post);
+
+            // Clear the form inputs after successful submission
+            document.getElementById("title").value = "";
+            document.getElementById("content").value = "";
+
+            // Show success feedback message
+            showFeedback("Post submitted successfully!", "success");
+        });
+
+        // Function to display feedback messages (error or success)
+        function showFeedback(message, type) {
+            const feedbackDiv = document.getElementById("feedback");
+            feedbackDiv.textContent = message;
+            feedbackDiv.className = type;  // Apply the appropriate class for styling (error or success)
+        }
+    </script>
+
+</body>
+</html>

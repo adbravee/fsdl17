@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Create Blog Post</title>
+    <link rel="stylesheet" href="blogstyle.css">
+    <style>
+    .h1{
+        text-align:center;
+    }
+    </style>
+</head>
+<body>
+
+    <div>
+        <h1 class="h1";>Create a Blog Post</h1>
+        <nav>
+          <button> 
+            <a href="view-blog.html">View All Posts</a>
+          </button>
+        </nav>
+    </div>
+
+    <!-- Blog post submission form -->
+    <div class="form-container">
+        <form id="postForm">
+            <input type="text" id="title" placeholder="Title" required><br><br>
+            <textarea id="content" placeholder="Write your content here" required></textarea><br><br>
+            <button type="submit">Submit Post</button>
+        </form>
+
+        <!-- Feedback messages (success or error) -->
+        <div id="feedback"></div>
+    </div>
+
+    <script src="blog.js"></script>
+
+</body>
+</html>
