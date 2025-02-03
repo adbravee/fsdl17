@@ -4,37 +4,132 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Create Blog Post</title>
-    <link rel="stylesheet" href="blogstyle.css">
     <style>
-    .h1{
-        text-align:center;
-    }
+        body { font-family: Arial, sans-serif; margin: 20px; }
+        h1 { text-align: center; }
+        .blog-post { border: 1px solid #ddd; padding: 10px; margin: 10px 0; background-color: #f9f9f9; }
+        .blog-post h3 { margin-top: 0; }
+        .error { color: red; font-size: 14px; margin-top: 10px; }
+        .success { color: green; font-size: 14px; margin-top: 10px; }
+        input, textarea { width: 100%; padding: 10px; margin: 5px 0; font-size: 16px; }
+        button { padding: 10px 15px; font-size: 16px; cursor: pointer; }
     </style>
 </head>
 <body>
 
-    <div>
-        <h1 class="h1";>Create a Blog Post</h1>
-        <nav>
-          <button> 
-            <a href="view-blog.html">View All Posts</a>
-          </button>
-        </nav>
-    </div>
+    <h1>Submit a Blog Post</h1>
 
     <!-- Blog post submission form -->
-    <div class="form-container">
-        <form id="postForm">
-            <input type="text" id="title" placeholder="Title" required><br><br>
-            <textarea id="content" placeholder="Write your content here" required></textarea><br><br>
-            <button type="submit">Submit Post</button>
-        </form>
+    <form id="postForm">
+        <input type="text" id="title" placeholder="Title" required><br><br>
+        <textarea id="content" placeholder="Write your content here" required></textarea><br><br>
+        <button type="submit">Submit Post</button>
+    </form>
 
-        <!-- Feedback messages (success or error) -->
-        <div id="feedback"></div>
-    </div>
+    <!-- Section to display the user's blog posts -->
+    <div id="blogPosts"></div>
 
-    <script src="blog.js"></script>
+    <!-- Feedback message area -->
+    <div id="feedback"></div>
+
+    <script>
+        // Check if the user is logged in
+        const loggedInUser = JSON.parse(localStorage.getItem("loggedInUser"));
+        if (!loggedInUser) {
+            window.location.href = "login.html";  // Redirect to login if not logged in
+        }
+
+        // Function to load posts and display only the logged-in user's posts
+        window.onload = function() {
+            const blogPostsSection = document.getElementById("blogPosts");
+            const savedPosts = JSON.parse(localStorage.getItem("blogPosts")) || [];
+
+            savedPosts.forEach((postData, index) => {
+                // Only display posts from the logged-in user
+                if (postData.username === loggedInUser.username) {
+                    const post = document.createElement("div");
+                    post.classList.add("blog-post");
+
+                    const postTitle = document.createElement("h3");
+                    postTitle.textContent = postData.title;
+                    post.appendChild(postTitle);
+
+                    const postContent = document.createElement("p");
+                    postContent.textContent = postData.content;
+                    post.appendChild(postContent);
+
+                    // Edit button
+                    const editBtn = document.createElement("button");
+                    editBtn.textContent = "Edit";
+                    editBtn.onclick = function() { editPost(index); };
+                    post.appendChild(editBtn);
+
+                    // Delete button
+                    const deleteBtn = document.createElement("button");
+                    deleteBtn.textContent = "Delete";
+                    deleteBtn.onclick = function() { deletePost(index); };
+                    post.appendChild(deleteBtn);
+
+                    blogPostsSection.appendChild(post);
+                }
+            });
+        };
+
+        // Handle post submission
+        document.getElementById("postForm").addEventListener("submit", function(event) {
+            event.preventDefault();
+            const title = document.getElementById("title").value.trim();
+            const content = document.getElementById("content").value.trim();
+
+            if (!title || !content) {
+                showFeedback("Both title and content are required!", "error");
+                return;
+            }
+
+            const newPost = {
+                username: loggedInUser.username,
+                title,
+                content
+            };
+
+            const savedPosts = JSON.parse(localStorage.getItem("blogPosts")) || [];
+            savedPosts.push(newPost);
+            localStorage.setItem("blogPosts", JSON.stringify(savedPosts));
+
+            showFeedback("Post submitted successfully!", "success");
+            document.getElementById("title").value = "";
+            document.getElementById("content").value = "";
+            window.location.reload();  // Refresh to display the new post
+        });
+
+        // Edit post function
+        function editPost(index) {
+            const savedPosts = JSON.parse(localStorage.getItem("blogPosts")) || [];
+            const postData = savedPosts[index];
+
+            document.getElementById("title").value = postData.title;
+            document.getElementById("content").value = postData.content;
+
+            // Remove the post (we will recreate it)
+            savedPosts.splice(index, 1);
+            localStorage.setItem("blogPosts", JSON.stringify(savedPosts));
+        }
+
+        // Delete post function
+        function deletePost(index) {
+            const savedPosts = JSON.parse(localStorage.getItem("blogPosts")) || [];
+            savedPosts.splice(index, 1);
+            localStorage.setItem("blogPosts", JSON.stringify(savedPosts));
+            window.location.reload();  // Reload the page to reflect the changes
+        }
+
+        // Function to display feedback
+        function showFeedback(message, type) {
+            const feedbackDiv = document.getElementById("feedback");
+            feedbackDiv.textContent = message;
+            feedbackDiv.className = type;
+        }
+    </script>
 
 </body>
 </html>

@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Create Post</title>
+    <link rel="stylesheet" href="blogstyle.css">
+</head>
+<body>
+
+    <h1>Create a New Blog Post</h1>
+
+    <form id="createPostForm">
+        <input type="text" id="title" placeholder="Post Title" required><br><br>
+        <textarea id="content" placeholder="Write your content here" required></textarea><br><br>
+        <button type="submit">Submit Post</button>
+    </form>
+    <!-- Add a Logout button on the Dashboard or other pages -->
+<button onclick="logout()">Logout</button>
+
+<script>
+    function logout() {
+        localStorage.removeItem("loggedInUser");
+        window.location.href = "login.html";  // Redirect to login page after logout
+    }
+</script>
+
+
+    <script>
+        // Check if the user is logged in
+        const loggedInUser = JSON.parse(localStorage.getItem("loggedInUser"));
+        if (!loggedInUser) {
+            alert("You must be logged in to create a post.");
+            window.location.href = "login.html";  // Redirect to login if not logged in
+        }
+    
+        document.getElementById("createPostForm").addEventListener("submit", function(event) {
+            event.preventDefault();
+    
+            const title = document.getElementById("title").value.trim();
+            const content = document.getElementById("content").value.trim();
+    
+            if (!title || !content) {
+                alert("Please fill in both title and content.");
+                return;
+            }
+    
+            const newPost = { username: loggedInUser.username, title, content };
+            const savedPosts = JSON.parse(localStorage.getItem("blogPosts")) || [];
+            savedPosts.push(newPost);
+            localStorage.setItem("blogPosts", JSON.stringify(savedPosts));
+    
+            alert("Post created successfully!");
+            window.location.href = "view-posts.html";  // Redirect to view posts page
+        });
+    </script>
+    
+
+</body>
+</html>

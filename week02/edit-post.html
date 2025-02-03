@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Edit Post</title>
+    <link rel="stylesheet" href="blogstyle.css">
+</head>
+<body>
+
+    <h1>Edit Your Blog Post</h1>
+
+    <form id="editForm">
+        <input type="text" id="editTitle" placeholder="Post Title" required><br><br>
+        <textarea id="editContent" placeholder="Write your updated content here" required></textarea><br><br>
+        <button type="submit">Save Changes</button>
+    </form>
+    <!-- Add a Logout button on the Dashboard or other pages -->
+<button onclick="logout()">Logout</button>
+
+<script>
+    function logout() {
+        localStorage.removeItem("loggedInUser");
+        window.location.href = "login.html";  // Redirect to login page after logout
+    }
+</script>
+
+
+    <script>
+        // Check if the user is logged in
+        const loggedInUser = JSON.parse(localStorage.getItem("loggedInUser"));
+        if (!loggedInUser) {
+            alert("You must be logged in to edit a post.");
+            window.location.href = "login.html";  // Redirect to login if not logged in
+        }
+    
+        const editPostData = JSON.parse(localStorage.getItem("editPost"));
+        if (!editPostData) {
+            window.location.href = "view-posts.html";  // Redirect if no post data to edit
+        }
+    
+        // Pre-populate the form with the current post data
+        document.getElementById("editTitle").value = editPostData.postData.title;
+        document.getElementById("editContent").value = editPostData.postData.content;
+    
+        document.getElementById("editForm").addEventListener("submit", function(event) {
+            event.preventDefault();
+    
+            const updatedTitle = document.getElementById("editTitle").value.trim();
+            const updatedContent = document.getElementById("editContent").value.trim();
+    
+            if (!updatedTitle || !updatedContent) {
+                alert("Please fill in both title and content.");
+                return;
+            }
+    
+            // Ensure the post belongs to the logged-in user
+            if (editPostData.postData.username !== loggedInUser.username) {
+                alert("You can only edit your own posts.");
+                return;
+            }
+    
+            // Update the post in localStorage
+            const savedPosts = JSON.parse(localStorage.getItem("blogPosts")) || [];
+            savedPosts[editPostData.postIndex] = {
+                username: loggedInUser.username,
+                title: updatedTitle,
+                content: updatedContent
+            };
+    
+            localStorage.setItem("blogPosts", JSON.stringify(savedPosts));
+            window.location.href = "view-posts.html";  // Redirect after saving changes
+        });
+    </script>
+    
+
+</body>
+</html>

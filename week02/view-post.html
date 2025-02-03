@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>View Posts</title>
+    <link rel="stylesheet" href="blogstyle.css">
+</head>
+<body>
+
+    <h1>Your Blog Posts</h1>
+
+    <div id="blogPosts"></div>
+
+    <script>
+        // Check if the user is logged in
+        const loggedInUser = JSON.parse(localStorage.getItem("loggedInUser"));
+        if (!loggedInUser) {
+            window.location.href = "login.html";  // Redirect to login if not logged in
+        }
+    
+        const blogPostsSection = document.getElementById("blogPosts");
+        const savedPosts = JSON.parse(localStorage.getItem("blogPosts")) || [];
+    
+        savedPosts.forEach((postData, index) => {
+            if (postData.username === loggedInUser.username) {
+                const post = document.createElement("div");
+                post.classList.add("blog-post");
+    
+                const postTitle = document.createElement("h3");
+                postTitle.textContent = postData.title;
+                post.appendChild(postTitle);
+    
+                const postContent = document.createElement("p");
+                postContent.textContent = postData.content;
+                post.appendChild(postContent);
+    
+                // Add Edit and Delete buttons
+                const editBtn = document.createElement("button");
+                editBtn.textContent = "Edit";
+                editBtn.onclick = function() { editPost(postData, index); };
+                post.appendChild(editBtn);
+    
+                const deleteBtn = document.createElement("button");
+                deleteBtn.textContent = "Delete";
+                deleteBtn.onclick = function() { deletePost(index); };
+                post.appendChild(deleteBtn);
+    
+                blogPostsSection.appendChild(post);
+            }
+        });
+    
+        function editPost(postData, postIndex) {
+            localStorage.setItem("editPost", JSON.stringify({ postData, postIndex }));
+            window.location.href = "edit-post.html";  // Redirect to edit page
+        }
+    
+        function deletePost(postIndex) {
+            const savedPosts = JSON.parse(localStorage.getItem("blogPosts")) || [];
+            savedPosts.splice(postIndex, 1);
+            localStorage.setItem("blogPosts", JSON.stringify(savedPosts));
+            window.location.reload();
+        }
+    </script>
+    
+
+</body>
+</html>
