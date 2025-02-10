@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Age Calculator</title>
+    <style>
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            font-family: 'Arial', sans-serif;
+        }
+        body {
+            background-color: #f2f2f2;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+        }
+        .calculator {
+            background-color: #fff;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+            width: 320px;
+            text-align: center;
+            font-size: 18px;
+        }
+        .calculator h2 {
+            margin-bottom: 20px;
+            color: #333;
+            font-size: 24px;
+        }
+        input[type="date"] {
+            padding: 10px;
+            width: 80%;
+            margin-bottom: 20px;
+            border-radius: 5px;
+            border: 2px solid #ddd;
+            outline: none;
+            font-size: 16px;
+            text-align: center;
+        }
+        input[type="date"]:focus {
+            border-color: #4CAF50;
+        }
+        button {
+            padding: 12px 18px;
+            background-color: #4CAF50;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            font-size: 18px;
+            cursor: pointer;
+        }
+        button:hover {
+            background-color: #45a049;
+        }
+        .result {
+            margin-top: 20px;
+            font-size: 20px;
+            color: #333;
+        }
+        .result span {
+            font-weight: bold;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="calculator">
+        <h2>Age Calculator</h2>
+        <input type="date" id="birthdate" />
+        <button onclick="calculateAge()">Calculate Age</button>
+        <div class="result" id="result"></div>
+    </div>
+
+    <script>
+        function calculateAge() {
+            const birthdateInput = document.getElementById('birthdate');
+            const birthdate = new Date(birthdateInput.value);
+
+            if (!birthdateInput.value) {
+                alert("Please select your birthdate!");
+                return;
+            }
+
+            const today = new Date();
+            let ageInMilliseconds = today - birthdate;
+            let ageDate = new Date(ageInMilliseconds);
+
+            const years = ageDate.getUTCFullYear() - 1970;
+            const months = ageDate.getUTCMonth();
+            const days = ageDate.getUTCDate() - 1;
+            const totalDays = Math.floor(ageInMilliseconds / (1000 * 60 * 60 * 24));
+
+            const resultElement = document.getElementById('result');
+            resultElement.innerHTML = `
+                <p>Your age is:</p>
+                <p><span>${years} years, ${months} months, and ${days} days</span></p>
+                <p>You have lived for <span>${totalDays} days</span></p>
+            `;
+        }
+    </script>
+
+</body>
+</html>

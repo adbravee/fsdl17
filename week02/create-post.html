@@ -15,8 +15,9 @@
         <textarea id="content" placeholder="Write your content here" required></textarea><br><br>
         <button type="submit">Submit Post</button>
     </form>
+    <button onclick="viewPost()" >View Post</button>
     <!-- Add a Logout button on the Dashboard or other pages -->
-<button onclick="logout()">Logout</button>
+<button onclick="logout()" style="color:red">Logout</button>
 
 <script>
     function logout() {
@@ -51,7 +52,9 @@
             localStorage.setItem("blogPosts", JSON.stringify(savedPosts));
     
             alert("Post created successfully!");
-            window.location.href = "view-posts.html";  // Redirect to view posts page
+            function viewPost() {
+                window.location.href = "view-post.html";  // Redirect to view posts page
+            }
         });
     </script>
     

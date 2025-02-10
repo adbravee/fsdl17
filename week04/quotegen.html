@@ -1,0 +1,123 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Random Quote Generator</title>
+    <style>
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            font-family: 'Arial', sans-serif;
+        }
+        body {
+            background-color: #f4f4f9;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            flex-direction: column;
+        }
+        .quote-container {
+            background-color: #fff;
+            padding: 40px;
+            border-radius: 10px;
+            box-shadow: 0 6px 15px rgba(0, 0, 0, 0.1);
+            text-align: center;
+            max-width: 500px;
+            width: 100%;
+        }
+        .quote {
+            font-size: 24px;
+            color: #333;
+            margin-bottom: 20px;
+            font-style: italic;
+        }
+        .author {
+            font-size: 18px;
+            color: #777;
+        }
+        button {
+            padding: 12px 20px;
+            background-color: #4CAF50;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            font-size: 18px;
+            cursor: pointer;
+            margin-top: 20px;
+        }
+        button:hover {
+            background-color: #45a049;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="quote-container">
+        <div class="quote" id="quote">"The best way to predict the future is to create it."</div>
+        <div class="author" id="author">- Abraham Lincoln</div>
+        <button onclick="generateQuote()">Get Another Quote</button>
+    </div>
+
+    <script>
+        const quotes = [
+            {
+                text: "The best way to predict the future is to create it.",
+                author: "Abraham Lincoln"
+            },
+            {
+                text: "Life is what happens when you're busy making other plans.",
+                author: "John Lennon"
+            },
+            {
+                text: "In three words I can sum up everything I've learned about life: it goes on.",
+                author: "Robert Frost"
+            },
+            {
+                text: "To be yourself in a world that is constantly trying to make you something else is the greatest accomplishment.",
+                author: "Ralph Waldo Emerson"
+            },
+            {
+                text: "It is never too late to be what you might have been.",
+                author: "George Eliot"
+            },
+            {
+                text: "You miss 100% of the shots you don't take.",
+                author: "Wayne Gretzky"
+            },
+            {
+                text: "The only way to do great work is to love what you do.",
+                author: "Steve Jobs"
+            },
+            {
+                text: "Believe you can and you're halfway there.",
+                author: "Theodore Roosevelt"
+            },
+            {text: "Success ke piche mat bhago ,excellence ke piche bhago success jhak marke tumhare piche ayega",
+            author: "Baba Ranchoddas"
+            },
+            {text: "Aall is Well",
+                author: "Rancho"
+            },
+            {text: "Tera Fufa pehle te hi suspended hande bawli gend",
+                author:"Hathi Ram Chaudhary"
+            },
+            {text:"Success is like getting pregnant everyone says congratulations but no one knows how many times you got fucked",
+                author:"Arnold Shezwanegger"
+            }
+        ];
+
+        function generateQuote() {
+            // Get a random quote from the array
+            const randomQuote = quotes[Math.floor(Math.random() * quotes.length)];
+            
+            // Update the quote and author on the page
+            document.getElementById('quote').textContent = `"${randomQuote.text}"`;
+            document.getElementById('author').textContent = `- ${randomQuote.author}`;
+        }
+    </script>
+
+</body>
+</html>

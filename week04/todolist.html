@@ -1,0 +1,142 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>To-Do List</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f4f4f9;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+        }
+        .todo-container {
+            background-color: #fff;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            width: 300px;
+            text-align: center;
+        }
+        .todo-container h2 {
+            margin: 0;
+            font-size: 24px;
+            margin-bottom: 15px;
+        }
+        input[type="text"] {
+            width: 70%;
+            padding: 10px;
+            margin-right: 10px;
+            border-radius: 5px;
+            border: 1px solid #ccc;
+        }
+        button {
+            padding: 10px 15px;
+            background-color: #4CAF50;
+            border: none;
+            color: white;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+        button:hover {
+            background-color: #45a049;
+        }
+        ul {
+            list-style: none;
+            padding: 0;
+            margin-top: 20px;
+        }
+        li {
+            padding: 10px;
+            border: 1px solid #ddd;
+            margin: 5px 0;
+            border-radius: 5px;
+            cursor: pointer;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        li.done {
+            text-decoration: line-through;
+            color: green;
+        }
+        li.undone {
+            color: red;
+        }
+        .delete-btn {
+            background-color: red;
+            border: none;
+            color: white;
+            padding: 5px 10px;
+            cursor: pointer;
+            border-radius: 5px;
+        }
+        .delete-btn:hover {
+            background-color: darkred;
+        }
+    </style>
+</head>
+<body>
+    <div class="todo-container">
+        <h2>To-Do List</h2>
+        <input type="text" id="task-input" placeholder="Enter a task">
+        <button onclick="addTask()">Add Task</button>
+        <ul id="task-list"></ul>
+    </div>
+
+    <script>
+        function addTask() {
+            const taskInput = document.getElementById("task-input");
+            const taskText = taskInput.value.trim();
+
+            // Check if input is empty
+            if (taskText === "") {
+                alert("Please enter a task!");
+                return;
+            }
+
+            const taskList = document.getElementById("task-list");
+
+            // Create list item for the new task
+            const taskItem = document.createElement("li");
+            taskItem.classList.add("undone");
+
+            // Task text
+            const taskTextNode = document.createElement("span");
+            taskTextNode.textContent = taskText;
+
+            // Delete button
+            const deleteButton = document.createElement("button");
+            deleteButton.classList.add("delete-btn");
+            deleteButton.textContent = "Delete";
+
+            // Attach click event for task item to toggle done/undone
+            taskItem.onclick = function() {
+                taskItem.classList.toggle("done");
+                taskItem.classList.toggle("undone");
+            };
+
+            // Attach click event for delete button to remove task
+            deleteButton.onclick = function(event) {
+                event.stopPropagation(); // Prevent triggering the task toggle
+                taskItem.remove();
+            };
+
+            // Append text and delete button to the task item
+            taskItem.appendChild(taskTextNode);
+            taskItem.appendChild(deleteButton);
+
+            // Add task item to the list
+            taskList.appendChild(taskItem);
+
+            // Clear input field after adding the task
+            taskInput.value = "";
+        }
+    </script>
+</body>
+</html>
