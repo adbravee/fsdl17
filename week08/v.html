@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Simple Two-Way Binding</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      text-align: center;
+      padding: 20px;
+    }
+    input {
+      padding: 10px;
+      font-size: 16px;
+      margin: 10px;
+    }
+    h1 {
+      color: #2c3e50;
+    }
+  </style>
+</head>
+<body>
+  <h1>Vanilla JavaScript Two-Way Binding</h1>
+  
+  <label for="nameInput">Enter Your Name: </label>
+  <input type="text" id="nameInput" />
+  
+  <p>Hello, <span id="greeting">Stranger</span>!</p>
+
+  <script>
+    // Select the elements
+    const nameInput = document.getElementById('nameInput');
+    const greeting = document.getElementById('greeting');
+    
+    // Add event listener to input field to update greeting dynamically
+    nameInput.addEventListener('input', function() {
+      greeting.textContent = nameInput.value || 'Stranger';
+    });
+  </script>
+</body>
+</html>

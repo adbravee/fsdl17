@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Simple Todo App</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      text-align: center;
+      padding: 20px;
+    }
+    input, button {
+      padding: 10px;
+      margin: 5px;
+      font-size: 16px;
+    }
+    ul {
+      list-style-type: none;
+      padding: 0;
+    }
+    li {
+      padding: 10px;
+      margin: 5px;
+      background-color: #f0f0f0;
+      border-radius: 5px;
+    }
+    li.completed {
+      text-decoration: line-through;
+      color: gray;
+    }
+    li button {
+      background-color: red;
+      color: white;
+      border: none;
+      border-radius: 3px;
+      padding: 5px 10px;
+    }
+    li button:hover {
+      cursor: pointer;
+    }
+  </style>
+</head>
+<body>
+
+  <h1>Todo List App</h1>
+
+  <input type="text" id="todoInput" placeholder="Enter a new task" />
+  <button onclick="addTodo()">Add Todo</button>
+
+  <ul id="todoList">
+    <!-- Todo items will appear here -->
+  </ul>
+
+  <script>
+    // Array to hold our todo items
+    let todos = [];
+
+    // Function to add a new todo item
+    function addTodo() {
+      const inputField = document.getElementById('todoInput');
+      const todoText = inputField.value.trim();
+
+      if (todoText !== '') {
+        // Add new todo to array
+        todos.push({ text: todoText, completed: false });
+
+        // Clear input field
+        inputField.value = '';
+        
+        // Render todos
+        renderTodos();
+      }
+    }
+
+    // Function to toggle the completed state of a todo
+    function toggleCompletion(index) {
+      todos[index].completed = !todos[index].completed;
+      renderTodos();
+    }
+
+    // Function to remove a todo
+    function removeTodo(index) {
+      todos.splice(index, 1);
+      renderTodos();
+    }
+
+    // Function to render todos on the page
+    function renderTodos() {
+      const todoList = document.getElementById('todoList');
+      todoList.innerHTML = ''; // Clear the list before re-rendering
+
+      todos.forEach((todo, index) => {
+        const li = document.createElement('li');
+        li.className = todo.completed ? 'completed' : '';
+
+        // Text content for the todo
+        li.innerHTML = `
+          <span>${todo.text}</span>
+          <button onclick="removeTodo(${index})">Delete</button>
+        `;
+
+        // Toggle completed state when clicked
+        li.addEventListener('click', function() {
+          toggleCompletion(index);
+        });
+
+        // Append the todo item to the list
+        todoList.appendChild(li);
+      });
+    }
+
+  </script>
+</body>
+</html>
